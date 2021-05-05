@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { Redirect, Route, Switch } from "react-router";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 
 import Header from "./components/header/header.component";
@@ -16,10 +16,11 @@ class App extends React.Component {
 
   componentDidMount() {
     const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      // this.setState({ currentUser: user });
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
+
         userRef.onSnapshot((snapShot) => {
           setCurrentUser({
             id: snapShot.id,
@@ -27,14 +28,15 @@ class App extends React.Component {
           });
         });
       }
-      setCurrentUser(userAuth);
 
-      // createUserProfileDocument(user);
+      setCurrentUser(userAuth);
     });
   }
+
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
+
   render() {
     return (
       <div>
@@ -45,7 +47,7 @@ class App extends React.Component {
           <Route
             exact
             path="/signin"
-            redirect={() =>
+            render={() =>
               this.props.currentUser ? (
                 <Redirect to="/" />
               ) : (
@@ -68,5 +70,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-//npm i node-sass
