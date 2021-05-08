@@ -1,3 +1,5 @@
+import './checkout-item.styles.scss'
+
 import React from 'react'
 
 const CheckoutItem = ({cartItem:{name, imageUrl, price, quantity}}) => {

@@ -6,7 +6,6 @@ import CheckoutItem from '../../components/checkout-item/checkout-item.component
 import React from 'react'
 import {connect} from 'react-redux'
 import {createStructuredSelector} from 'reselect'
-import {toggleCartHidden} from '../../redux/cart/cart.actions'
 
 const CheckoutPage = ({cartItems, total}) =>  (
         <div className='checkout-page'>
