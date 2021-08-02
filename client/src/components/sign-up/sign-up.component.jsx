@@ -1,62 +1,56 @@
 import './sign-up.styles.scss'
 
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
 import CustomButton from '../custom-button/custom-button.component';
 import FormInput from '../form-input/form-input.component';
 import {connect} from 'react-redux'
 import { signUpStart } from '../../redux/user/user.actions';
 
-export class SignUp extends Component {
-    constructor(){
-        super()
-        this.state={
-            displayName:'',
+export const SignUp =({signUpStart})=> {
+    const [userCredentials, setUserCredentials]=useState({
+         displayName:'',
             email:'',
             password: '',
             confirmPassword: ''
-        }
-    }
-    handleSubmit=async event=>{
+    })
+    // constructor(){
+    //     super()
+    //     this.state={
+            // displayName:'',
+            // email:'',
+            // password: '',
+            // confirmPassword: ''
+    //     }
+    // }
+    const {displayName, email, password, confirmPassword}=userCredentials;
+    const handleSubmit=async event=>{
         event.preventDefault();
-        const {signUpStart} = this.props;
-        const {displayName, email, password, confirmPassword}=this.state;
+        // const {signUpStart} = this.props;
+        
         if(password!==confirmPassword){
             alert("passwords don't match");
             return;
         }
         signUpStart({displayName, email, password})
-//         try{
-// const {user}=await auth.createUserWithEmailAndPassword(email, password);
-// await createUserProfileDocument(user, {displayName});
-// this.setState({
-//             displayName:'',
-//             email:'',
-//             password: '',
-//             confirmPassword: ''
-//         })
-//         }catch(error){
-// console.error(error)
-//         }
+
     }
 
-    handleChange=event=>{
+    const handleChange=event=>{
         const {name, value}=event.target;
-        this.setState({[name]: value});
+        setUserCredentials({...userCredentials, [name]: value});
     }
     
-    render() {
-        const {displayName, email, password, confirmPassword}=this.state;
         return (
             <div className="sign-up">
                 <h2 className="title">I do not nave an account</h2>
                 <span>Sign up with your email and password</span>
-                <form className="sign-up-form" onSubmit={this.handleSubmit}>
+                <form className="sign-up-form" onSubmit={handleSubmit}>
                     <FormInput 
                      type="text"
                      name="displayName"
                      value={displayName}
-                     onChange={this.handleChange}
+                     onChange={handleChange}
                      label="Display Name"
                      required
                     />
@@ -64,7 +58,7 @@ export class SignUp extends Component {
                      type="email"
                      name="email"
                      value={email}
-                     onChange={this.handleChange}
+                     onChange={handleChange}
                      label="email"
                      required
                     />
@@ -72,7 +66,7 @@ export class SignUp extends Component {
                      type="password"
                      name="password"
                      value={password}
-                     onChange={this.handleChange}
+                     onChange={handleChange}
                      label="password"
                      required
                     />
@@ -80,7 +74,7 @@ export class SignUp extends Component {
                      type="password"
                      name="confirmPassword"
                      value={confirmPassword}
-                     onChange={this.handleChange}
+                     onChange={handleChange}
                      label="confirm password"
                      required
                     />
@@ -88,7 +82,7 @@ export class SignUp extends Component {
                 </form>
             </div>
         )
-    }
+    
 }
 const mapDispatchToProps=dispatch=>({
     signUpStart: userCredentials=> dispatch(signUpStart(userCredentials))
